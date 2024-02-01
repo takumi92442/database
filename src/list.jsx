@@ -19,7 +19,7 @@ export function List(props) {
 useEffect(() => {
   const get = async () => {
     try {
-      const fetchData = await getTask();  // LoginID を引数に渡す
+      const fetchData = await getTask(LoginID);  
       setData(fetchData);
       console.log(fetchData);
     } catch (error) {
@@ -52,7 +52,7 @@ useEffect(() => {
       console.log(response); // サーバーからのレスポンスを出力
   
       // データの再取得
-      const fetchData = await getTask();
+      const fetchData = await getTask(LoginID);
       setData(fetchData); // データをセット
   
     } catch (error) {
@@ -76,11 +76,15 @@ useEffect(() => {
     }
   };
 
-
+const DeleteButton = async(props) => {
+  const deleteData = await delete_task(props)
+  const fetchData = await getTask(LoginID);
+      setData(fetchData);
+}
 
   return (
     <>
-    {console.log(data)}
+    {console.log(LoginID)}
 	  <div className="form">
       <input
         type="text"
@@ -106,7 +110,8 @@ useEffect(() => {
         >
           { console.log(item) }
           <div style={{display:"flex" , flexDirection:"row"}}>{item.Task} {item.LimitDate}
-          <button onClick={() => delete_task(String(item.ID))}>削除</button>
+          {/* <button onClick={() => delete_task(item.ID)}>削除</button> */}
+          <button onClick={() => DeleteButton(item.ID)}>削除</button>
           </div>
         </li>)
       })}

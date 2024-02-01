@@ -18,9 +18,10 @@ export function postLogin(login) {
   });
 }
 
-export function getTask() {
-  return request("/task_list");
+export function getTask(LoginID) {
+  return request(`/task_list/${LoginID}`);
 }
+
 
 export function postTask(task) {
   console.log(task);
@@ -34,13 +35,12 @@ export function postTask(task) {
 }
 
 export function delete_task(id) {
-	return request("/task_list", {
-	  method: "POST",
-	  headers: {
-		"Content-Type": "application/json",
-	  },
-	  body: JSON.stringify(id),
-	});
+  return request(`/task_list/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 }
   
 
