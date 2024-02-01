@@ -33,4 +33,14 @@ export function postTask(task) {
   });
 }
 
+export function delete_task(id) {
+	return request("/task_list", {
+	  method: "POST",
+	  headers: {
+		"Content-Type": "application/json",
+	  },
+	  body: JSON.stringify(id),
+	});
+}
+  
 

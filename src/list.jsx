@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { getLogin,postLogin,getTask,postTask} from "./api.js";
+import { getLogin, postLogin, getTask, postTask } from "./api.js";
+import { delete_task } from "./api.js";
 import { format } from 'date-fns';
 
 
@@ -14,18 +15,20 @@ export function List(props) {
   const [data, setData] = useState([]);
   const {LoginID} = props
 
-  useEffect(() => {
-    const get = async () => {
-      try {
-        const fetchData = await getTask(LoginID); // 修正が必要な行
-        setData(fetchData); // データをセット
-        console.log(fetchData);
-      } catch (error) {
-        console.error("データの取得に失敗しました", error);
-      }
-    };
-    get();
-  }, [LoginID]); // LoginID を依存性として追加
+  // React コンポーネント内での呼び出し
+useEffect(() => {
+  const get = async () => {
+    try {
+      const fetchData = await getTask();  // LoginID を引数に渡す
+      setData(fetchData);
+      console.log(fetchData);
+    } catch (error) {
+      console.error("データの取得に失敗しました", error);
+    }
+  };
+  get();
+},[]);
+
   
 
   const convertToPostgresDate = () => {
@@ -73,28 +76,7 @@ export function List(props) {
     }
   };
 
-  const filteredArry = arry.filter((task) => {
-    if (filterA.trim() !== "") {
-      return task.text.includes(filterA);
-    }
-    return true;
-  });
 
-  console.log(arry);
-
-  const mappedArry = filteredArry.map((task) => (
-	<div key={task.id} className="graph">
-    <li >
-      {task.text}
-      <br />
-	  入力日 :
-      {new Date(task.timestamp.seconds * 1000).toLocaleString()}
-      <br />
-      締切日: {task.limitDate ? new Date(task.limitDate.seconds * 1000).toLocaleDateString() : 'N/A'}
-      <button className="delete" onClick={() => handleDelete(task.id)}>削除</button>
-    </li>
-	</div>
-  ));
 
   return (
     <>
@@ -115,17 +97,21 @@ export function List(props) {
         onChange={(date) => setLimitDate(date)}
       />
 	締切日を入力
-      <button onClick={Switch}>挿入</button>
-      <p>フィルター</p>
-      <input
-        type="text"
-		    className="filtter"
-        placeholder="絞りたいワードを入力"
-        value={filterA}
-        onChange={(e) => setfilterA(e.target.value)}
-      />
-      
-
+      <button onClick={Switch}>挿入</button>     
+    <div>
+      <ul>
+      {data.map((item) =>{
+        return (
+        <li key={item.ID}
+        >
+          { console.log(item) }
+          <div style={{display:"flex" , flexDirection:"row"}}>{item.Task} {item.LimitDate}
+          <button onClick={() => delete_task(String(item.ID))}>削除</button>
+          </div>
+        </li>)
+      })}
+      </ul>
+    </div>
 	  </div>
     </>
   );
