@@ -4,83 +4,33 @@ async function request(path, options = null) {
   return response.json();
 }
 
-export function getPublishers() {
-  return request("/todo-lists");
+export function getLogin() {
+  return request("/login");
 }
 
-export function postPublisher(publisher) {
-  return request("/todo-lists", {
+export function postLogin(login) {
+  return request("/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(publisher),
+    body: JSON.stringify(login),
   });
 }
 
-
-export function getAuthors() {
-  return request("/authors");
+export function getTask() {
+  return request("/task_list");
 }
 
-export function postAuthor(author) {
-  return request("/authors", {
+export function postTask(task) {
+  console.log(task);
+  return request("/task_list", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(author),
+    body: JSON.stringify(task),
   });
 }
 
-export function getBooks() {
-  return request("/books");
-}
 
-export function postBook(book) {
-  return request("/books", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(book),
-  });
-}
-
-export function getLendings() {
-  return request("/lendings");
-}
-
-export function postLending(lending) {
-  return request("/lendings", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(lending),
-  });
-}
-
-export function postLendingReturn(lendingId) {
-  return request(`/lendings/${lendingId}/return`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({}),
-  });
-}
-
-export function getUsers() {
-  return request("/users");
-}
-
-export function postUser(user) {
-  return request("/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(user),
-  });
-}
